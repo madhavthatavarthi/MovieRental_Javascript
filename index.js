@@ -5,6 +5,12 @@ const app = express();
 const mongoose = require('mongoose');
 const genres = require('./routes/genres');
 const customers = require('./routes/customers');
+const config = require('config');
+
+if(!config.get('jwtPrivateKey')) {
+    console.error('FATAL ERROR: jwtPrivateKey');
+    process.exit(1);
+}
 
 mongoose.connect('mongodb://localhost/vidly')
 .then(() => console.log("Connected to the network"))
@@ -16,6 +22,9 @@ app.use('/', genres);
 app.use('/api/customers', customers);
 app.use('/api/movies', require('./routes/movies'));
 app.use('/api/rentals', require('./routes/rentals'));
+app.use('/api/register', require('./routes/register'));
+app.use('/api/auth', require('./routes/auth'));
+
 
 // async function createGenre(name) {
 //     let genre =  new Genres({

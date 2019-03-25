@@ -17,17 +17,18 @@ let userSchema = mongoose.model('users', new mongoose.Schema({
         type: String,
         required: true,
         minlength: 5,
-        maxlength: 50
+        maxlength: 1024
     }
 }));
 
 function validateSchema(user) {
-    let schema = {name: Joi.String().required().minlength(5).maxlength(50),
-                   email: Joi.String().unique().required(),
-                   password: Joi.String().required().minlength(5).maxlength(50) 
+    let schema = {
+                   name: Joi.string().required().min(5).max(50),
+                   email: Joi.string().required().email(),
+                   password: Joi.string().required().min(5).max(255) 
                 }
-     return Joi.validate(schema, user);           
+     return Joi.validate(user, schema);           
 }
 
 exports.validate = validateSchema;
-exports.user = userSchema;
+exports.User = userSchema;
