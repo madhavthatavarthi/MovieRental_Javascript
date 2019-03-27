@@ -1,12 +1,7 @@
 const {Genres, validate} = require('../models/genre');
 const express = require('express');
 const router = express.Router();
-
-// let genres = [
-//     {id: 1, name: "horror"},
-//     {id: 2, name: "comedy"},
-//     {id: 3, name: "Thriller"}
-// ]
+const authorization = require('../middleware/authorization')
 
 router.get('/api/genres', async (req, res) =>{
     const genre = await Genres.find().sort('name');
@@ -14,8 +9,8 @@ router.get('/api/genres', async (req, res) =>{
     
 })
 
-router.post('/api/genres', (req,res) => {
-    console.log(req.body);
+router.post('/api/genres', authorization, (req,res) => {
+    console.log('req.body',req.body);
     // const {error} = validateGenre(req.body);
     // console.log('req.body',error);  
     // if (error) return res.status(400).send(error.details[0].message);
