@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const genres = require('./routes/genres');
 const customers = require('./routes/customers');
 const config = require('config');
+const error = require('./middleware/error')
 
 if(!config.get('jwtPrivateKey')) {
     console.error('FATAL ERROR: jwtPrivateKey');
@@ -24,6 +25,8 @@ app.use('/api/movies', require('./routes/movies'));
 app.use('/api/rentals', require('./routes/rentals'));
 app.use('/api/register', require('./routes/register'));
 app.use('/api/auth', require('./routes/auth'));
+
+app.use(error);
 
 
 // async function createGenre(name) {

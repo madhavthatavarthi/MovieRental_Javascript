@@ -1,15 +1,29 @@
 const {Genres, validate} = require('../models/genre');
 const express = require('express');
 const router = express.Router();
-const authorization = require('../middleware/authorization')
+const authorization = require('../middleware/authorization');
+const admin = require('../middleware/admin');
+const util = require('util');
 
-router.get('/api/genres', async (req, res) =>{
+function asyncMiddleware(handler) {
+    return async (req, res, next) => {
+    try {
+        console.log(req.params.id);
+        await handler(req, res);
+        //handler();
+    }
+    catch(ex){
+        next(ex)
+    }
+  }
+}
+
+router.get('/api/genres/:id', asyncMiddleware(async (req, res) =>{
     const genre = await Genres.find().sort('name');
-    res.send(genre);
-    
-})
+    res.send(genre);    
+}));
 
-router.post('/api/genres', authorization, (req,res) => {
+router.post('/api/genres', [authorization, admin], (req,res) => {
     console.log('req.body',req.body);
     // const {error} = validateGenre(req.body);
     // console.log('req.body',error);  
