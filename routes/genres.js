@@ -1,22 +1,10 @@
 const {Genres, validate} = require('../models/genre');
 const express = require('express');
+const asyncMiddleware = require('../middleware/asynch');
 const router = express.Router();
 const authorization = require('../middleware/authorization');
 const admin = require('../middleware/admin');
 const util = require('util');
-
-function asyncMiddleware(handler) {
-    return async (req, res, next) => {
-    try {
-        console.log(req.params.id);
-        await handler(req, res);
-        //handler();
-    }
-    catch(ex){
-        next(ex)
-    }
-  }
-}
 
 router.get('/api/genres/:id', asyncMiddleware(async (req, res) =>{
     const genre = await Genres.find().sort('name');
@@ -66,9 +54,7 @@ async function createGenre(name) {
         return await genre.save();
     }
     catch(err) {
-        console.log(err);
-        
-        
+        console.log(err);         
     }
 }
 
