@@ -11,6 +11,7 @@ router.get('/api/genres/:id', asyncMiddleware(async (req, res) =>{
     res.send(genre);    
 }));
 
+
 router.post('/api/genres', [authorization, admin], (req,res) => {
     console.log('req.body',req.body);
     // const {error} = validateGenre(req.body);
